@@ -6,7 +6,6 @@ export default function ViewFamilyMember() {
 
     const [familyMember, setFamilyMember] = useState({
         name: "",
-        username: "",
         email: "",
         age:"",
         gender:"",
@@ -36,10 +35,6 @@ export default function ViewFamilyMember() {
                                 <li className='list-group-item'>
                                     <b>Name: </b>
                                     {familyMember.name}
-                                </li>
-                                <li className='list-group-item'>
-                                    <b>Family Username: </b>
-                                    {familyMember.username}
                                 </li>
                                 <li className='list-group-item'>
                                     <b>Email: </b>
