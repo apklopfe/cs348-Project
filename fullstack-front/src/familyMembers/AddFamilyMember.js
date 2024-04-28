@@ -1,63 +1,114 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function ViewFamilyMember() {
+export default function AddFamilyMember() {
+    let navigate = useNavigate();
 
     const [familyMember, setFamilyMember] = useState({
         name: "",
         email: "",
-        age:"",
-        gender:"",
-        phone:""
-    })
+        age: "",
+        gender: "",
+        phone: ""
+    });
 
-    const { id } = useParams();
+    const { name, email, age, gender, phone } = familyMember;
 
-    useEffect(() => {
-        loadFamilyMember();
-    }, [])
+    const onInputChange = (e) => {
+        setFamilyMember({ ...familyMember, [e.target.name]: e.target.value });
+    };
 
-    const loadFamilyMember = async () => {
-        const result = await axios.get(`http://localhost:8080/familyMember/${id}`)
-        setFamilyMember(result.data)
-    }
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        await axios.post("http://localhost:8080/familyMember", familyMember);
+        navigate("/");
+    };
 
     return (
         <div className='container'>
             <div className='row'>
                 <div className='col-md-6 offset-md-3 border rounded p-4 mt-2 shadow'>
-                    <h2 className="text-center m-4">Family Member Details</h2>
-                    <div className='card'>
-                        <div className='card-header'>
-                            Details of {familyMember.name}
-                            <ul className='list-group list-group-flush'>
-                                <li className='list-group-item'>
-                                    <b>Name: </b>
-                                    {familyMember.name}
-                                </li>
-                                <li className='list-group-item'>
-                                    <b>Email: </b>
-                                    {familyMember.email}
-                                </li>
-                                <li className='list-group-item'>
-                                    <b>Phone: </b>
-                                    {familyMember.phone}
-                                </li>
-                                <li className='list-group-item'>
-                                    <b>Age: </b>
-                                    {familyMember.age}
-                                </li>
-                                <li className='list-group-item'>
-                                    <b>Gender: </b>
-                                    {familyMember.gender}
-                                </li>
-                            </ul>
+                    <h2 className="text-center m-4">Register Family Member</h2>
+                    <form onSubmit={(e) => onSubmit(e)}>
+                        <div className='mb-3'>
+                            <label htmlFor='Name' className='form-label'>
+                                Name
+                            </label>
+                            <input
+                                type='text'
+                                className='form-control'
+                                placeholder='Name'
+                                name='name'
+                                value={name}
+                                onChange={(e) => onInputChange(e)}
+                                required
+                            />
                         </div>
-                    </div>
-                    <Link className='btn btn-primary my-2' to={"/"}>Home</Link>
+                        <div className='mb-3'>
+                            <label htmlFor='Email' className='form-label'>
+                                Email
+                            </label>
+                            <input
+                                type='email'
+                                className='form-control'
+                                placeholder='Email Address'
+                                name='email'
+                                value={email}
+                                onChange={(e) => onInputChange(e)}
+                                required
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <label htmlFor='Phone' className='form-label'>
+                                Phone
+                            </label>
+                            <input
+                                type='tel'
+                                className='form-control'
+                                placeholder='Phone Number'
+                                name='phone'
+                                value={phone}
+                                onChange={(e) => onInputChange(e)}
+                                pattern='(\([0-9]{3}\)[0-9]{3}-?[0-9]{4}|[0-9]{3}-?[0-9]{3}-?[0-9]{4})'
+                                required
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <label htmlFor='Age' className='form-label'>
+                                Age
+                            </label>
+                            <input
+                                type='number'
+                                className='form-control'
+                                placeholder='Age'
+                                name='age'
+                                value={age}
+                                onChange={(e) => onInputChange(e)}
+                                required
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <label htmlFor='Gender' className='form-label'>
+                                Gender
+                            </label>
+                            <select
+                                className='form-select'
+                                name='gender'
+                                value={gender}
+                                onChange={(e) => onInputChange(e)}
+                                required
+                            >
+                                <option value=''>Select Gender</option>
+                                <option value='Male'>Male</option>
+                                <option value='Female'>Female</option>
+                            </select>
+                        </div>
+                        <button type='submit' className='btn btn-outline-primary'>Submit</button>
+                        <Link className='btn btn-outline-danger mx-2' to="/">Cancel</Link>
+                    </form>
                 </div>
             </div>
         </div>
-    )
+    );
 }
