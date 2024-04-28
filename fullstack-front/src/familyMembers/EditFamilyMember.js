@@ -109,7 +109,6 @@ export default function EditFamilyMember() {
                                 <option value=''>Select Gender</option>
                                 <option value='Male'>Male</option>
                                 <option value='Female'>Female</option>
-                                <option value='Other'>Apache Attack Helicopter</option>
                             </select>
                         </div>
                         <button type='submit' className='btn btn-outline-primary'>Submit</button>
